@@ -1,12 +1,17 @@
 package pl.edu.pjatk.MPR_spring.controller;
+//@GetMapping: Позволяет получать данные с сервера по заданному URL.
+//@PostMapping: Используется для отправки данных на сервер, например, для создания новых ресурсов.
+//@RequestBody:Позволяет получать данные, отправленные в формате JSON или XML.
+//@PathVariable:озволяет извлекать переменные из URI (путей) запроса. Используется для идентификаторов ресурсов.
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pjatk.MPR_spring.Services.CapybaraService;
+import pl.edu.pjatk.MPR_spring.Service.CapybaraService;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController //adnotacja do komunikowania z secia
@@ -19,14 +24,25 @@ public class MyRestController   {
         this.capybaraService = capybaraService;
     }
 
+
+    @GetMapping ("capybara/name/{name}")
+        public List<Capybara> getByName(@PathVariable String name){
+            return this.capybaraService.getCapybaraByName(name);
+        }
+
+        @GetMapping("capybara/color/{color}")
+        public List<Capybara> getByColor(@PathVariable String color){
+        return this.capybaraService.getCapybaraByColor(color);
+        }
+
     @GetMapping("capybara/all")// <- endpoint
-    public List<Capybara> getAll(){
+    public Iterable<Capybara> getAll(){
         return this.capybaraService.getCapybaraList();
 
     }
 
     @GetMapping("capybara/{id}")// <- endpoint
-    public Capybara get(@PathVariable Integer id){
+    public Optional<Capybara> get(@PathVariable Long id){
         return this.capybaraService.getCapybara(id);
 
     }
@@ -47,8 +63,5 @@ public class MyRestController   {
         this.capybaraService.change(name, color, newCapybara);
     }
 
-    //@GetMapping: Позволяет получать данные с сервера по заданному URL.
-    //@PostMapping: Используется для отправки данных на сервер, например, для создания новых ресурсов.
-    //@RequestBody:Позволяет получать данные, отправленные в формате JSON или XML.
-    //@PathVariable:озволяет извлекать переменные из URI (путей) запроса. Используется для идентификаторов ресурсов.
+
 }
