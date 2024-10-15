@@ -35,12 +35,16 @@ public class MyRestController   {
         return this.capybaraService.getCapybaraByColor(color);
         }
 
+
+        //позволяет работать с коллекциями объектов, не заботясь о конкретном типе коллекции (например, List, Set)
     @GetMapping("capybara/all")// <- endpoint
     public Iterable<Capybara> getAll(){
         return this.capybaraService.getCapybaraList();
 
     }
 
+
+    //это контейнерный объект, который может содержать либо значение(or null)
     @GetMapping("capybara/{id}")// <- endpoint
     public Optional<Capybara> get(@PathVariable Long id){
         return this.capybaraService.getCapybara(id);
@@ -48,8 +52,8 @@ public class MyRestController   {
     }
 
     @PostMapping("capybara")
-    public void addCapybara(@RequestBody Capybara capybara) {
-        this.capybaraService.add(capybara);
+    public Capybara addCapybara(@RequestBody Capybara capybara) {
+       return this.capybaraService.saveCapybara(capybara);
     }
 
     // Метод для удаления капибары по id
@@ -58,9 +62,10 @@ public class MyRestController   {
         this.capybaraService.delete(id);
     }
 
+    //то есть Patch
     @PutMapping("capybara/{name}/{color}")
     public void changeCapybara(@PathVariable String name, @PathVariable String color, @RequestBody Capybara newCapybara) {
-        this.capybaraService.change(name, color, newCapybara);
+       this.capybaraService.update(name, color, newCapybara);
     }
 
 

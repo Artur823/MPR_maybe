@@ -26,12 +26,13 @@ public class CapybaraService {
         return repository.findByColor(color);
     }
 
+
     public Iterable<Capybara> getCapybaraList() {
         return repository.findAll();
     }
 
-    public void add(Capybara capybara) {
-        this.capybaraList.add(capybara);
+    public Capybara saveCapybara(Capybara capybara) {
+       return repository.save(capybara);
     }
 
     public Optional<Capybara> getCapybara(Long id) {
@@ -39,21 +40,16 @@ public class CapybaraService {
     }
 
     public void delete(Integer id) {
-        this.capybaraList.remove(id);
+        this.repository.deleteById(id);
     }
 
 
-    public void change(String name, String color, Capybara newCapybara) {
-        for (int i = 0; i < capybaraList.size(); i++) {
-            Capybara existingCapybara = capybaraList.get(i);
-            if (existingCapybara.getName().equals(name) && existingCapybara.getColor().equals(color)) {
-                capybaraList.set(i, newCapybara);
-                return;
-            }
-        }
-        // Если не нашли подходящий элемент
-        throw new RuntimeException("Capybara with name " + name + " and color " + color + " not found");
+    public void update(String name, String color, Capybara newCapybara) {
+        repository.findByName(name).stream().filter
+                (c -> c.getColor().equals(color)).forEach(existing -> { existing.setName(newCapybara.getName());
+            existing.setColor(newCapybara.getColor()); repository.save(existing);});
     }
+
 
 }
 
