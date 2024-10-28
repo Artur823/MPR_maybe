@@ -8,6 +8,7 @@ package pl.edu.pjatk.MPR_spring.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.MPR_spring.Service.CapybaraService;
+import pl.edu.pjatk.MPR_spring.Service.StringUtilsService;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
 
 import java.util.List;
@@ -46,14 +47,14 @@ public class MyRestController   {
 
     //это контейнерный объект, который может содержать либо значение(or null)
     @GetMapping("capybara/{id}")// <- endpoint
-    public Optional<Capybara> get(@PathVariable Long id){
+    public Optional<Capybara> get(@PathVariable Long id ){
         return this.capybaraService.getCapybara(id);
 
     }
 
     @PostMapping("capybara")
     public Capybara addCapybara(@RequestBody Capybara capybara) {
-       return this.capybaraService.saveCapybara(capybara);
+       return capybaraService.saveCapybara(capybara);
     }
 
     // Метод для удаления капибары по id
