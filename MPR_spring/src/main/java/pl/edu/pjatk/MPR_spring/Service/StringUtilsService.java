@@ -10,7 +10,7 @@ public class StringUtilsService {
         return str.toUpperCase();
     }
 
-    public String LowerCase(String str) {
-        return str.substring(0, 1).toLowerCase() + str.substring(1).toLowerCase();
+    public String lowerCase(String str) {
+        return str.substring(0, 1) + str.substring(1).toLowerCase();
     }
 }

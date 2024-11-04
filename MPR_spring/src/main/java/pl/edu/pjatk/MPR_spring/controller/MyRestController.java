@@ -6,6 +6,9 @@ package pl.edu.pjatk.MPR_spring.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.MPR_spring.Service.CapybaraService;
 import pl.edu.pjatk.MPR_spring.Service.StringUtilsService;
@@ -27,46 +30,47 @@ public class MyRestController   {
 
 
     @GetMapping ("capybara/name/{name}")
-        public List<Capybara> getByName(@PathVariable String name){
-            return this.capybaraService.getCapybaraByName(name);
+        public ResponseEntity<List<Capybara>> getByName(@PathVariable String name){
+            return new ResponseEntity<>(this.capybaraService.getCapybaraByName(name), HttpStatus.OK);
         }
 
         @GetMapping("capybara/color/{color}")
-        public List<Capybara> getByColor(@PathVariable String color){
-        return this.capybaraService.getCapybaraByColor(color);
+        public ResponseEntity<List<Capybara>> getByColor(@PathVariable String color){
+        return new ResponseEntity<>(this.capybaraService.getCapybaraByColor(color), HttpStatus.OK);
         }
 
 
         //позволяет работать с коллекциями объектов, не заботясь о конкретном типе коллекции (например, List, Set)
     @GetMapping("capybara/all")// <- endpoint
-    public Iterable<Capybara> getAll(){
-        return this.capybaraService.getCapybaraList();
-
+    public ResponseEntity<Iterable<Capybara>> getAll(){
+        return new ResponseEntity<>(this.capybaraService.getCapybaraList(), HttpStatus.OK);
     }
 
 
     //это контейнерный объект, который может содержать либо значение(or null)
     @GetMapping("capybara/{id}")// <- endpoint
-    public Optional<Capybara> get(@PathVariable Long id ){
-        return this.capybaraService.getCapybara(id);
+    public ResponseEntity<Capybara> get(@PathVariable Long id ){
+        return new ResponseEntity<>(this.capybaraService.getCapybara(id),HttpStatus.OK);
 
     }
 
     @PostMapping("capybara")
-    public Capybara addCapybara(@RequestBody Capybara capybara) {
-       return capybaraService.saveCapybara(capybara);
+        public ResponseEntity<Capybara> addCapybara(@RequestBody Capybara capybara){
+        this.capybaraService.add(capybara);
+        return new ResponseEntity<>(capybara, HttpStatus.OK);
     }
-
     // Метод для удаления капибары по id
     @DeleteMapping("capybara/{id}")
-    public void deleteCapybara(@PathVariable Integer id) {
+    public ResponseEntity<Capybara> deleteCapybara(@PathVariable Integer id) {
         this.capybaraService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //то есть Patch
     @PutMapping("capybara/{name}/{color}")
-    public void changeCapybara(@PathVariable String name, @PathVariable String color, @RequestBody Capybara newCapybara) {
+    public ResponseEntity<Capybara> changeCapybara(@PathVariable String name, @PathVariable String color, @RequestBody Capybara newCapybara) {
        this.capybaraService.update(name, color, newCapybara);
+       return new ResponseEntity<>(newCapybara, HttpStatus.OK);
     }
 
 
