@@ -10,7 +10,8 @@ public class StringUtilsService {
         return str.toUpperCase();
     }
 
-    public String lowerCase(String str) {
+    public String goToLowerCaseExceptFirstLetter(String str) {
         return str.substring(0, 1) + str.substring(1).toLowerCase();
     }
 }
+

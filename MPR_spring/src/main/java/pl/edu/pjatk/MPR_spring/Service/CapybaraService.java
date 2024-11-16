@@ -3,6 +3,7 @@ package pl.edu.pjatk.MPR_spring.Service;
 import org.apache.catalina.valves.rewrite.InternalRewriteMap;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.edu.pjatk.MPR_spring.exception.CapybaraAlredyExist;
 import pl.edu.pjatk.MPR_spring.exception.CapybaraNotFoundException;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
@@ -12,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class CapybaraService {
     private List<Capybara> capybaraList = new ArrayList<>();
     private StringUtilsService stringUtilsService ;
     private CapybaraRepository repository ;
 
+    //CapybaraService
     public CapybaraService(CapybaraRepository repository, StringUtilsService stringUtilsService) {
         this.repository = repository;
         this.stringUtilsService = stringUtilsService;
@@ -25,25 +27,30 @@ public class CapybaraService {
         this.repository.save(new Capybara("MAks", "green"));
         this.repository.save(new Capybara("andrey", "black"));
     }
+
+    //getCapybaraByName
     public List<Capybara> getCapybaraByName(String name) {
         Iterable<Capybara> capybaraByNAme = repository.findAll();
-        capybaraByNAme.forEach(capybara -> stringUtilsService.lowerCase(String.valueOf(capybara)));
+        capybaraByNAme.forEach(capybara -> stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara)));
         return repository.findByName(name);
     }
+
+    //getCapybaraByColor
     public List<Capybara> getCapybaraByColor(String color) {
         Iterable<Capybara> capybaraByColor = repository.findAll();
-        capybaraByColor.forEach(capybara -> stringUtilsService.lowerCase(String.valueOf(capybara)));
+        capybaraByColor.forEach(capybara -> stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara)));
         return repository.findByColor(color);
     }
 
-
-
+    //getCapybaraList
     public Iterable<Capybara> getCapybaraList() {
        Iterable<Capybara> capybaraIterable = repository.findAll();
        capybaraIterable.forEach(capybara -> stringUtilsService.UpperCase(String.valueOf(capybara)));
         return repository.findAll();
     }
 
+
+    //getCapybara
     public Capybara getCapybara(Long id) {
         Optional<Capybara> capybara = this.repository.findById(id);
         if (capybara.isEmpty()) {
@@ -52,6 +59,7 @@ public class CapybaraService {
         return capybara.get();
     }
 
+    //delete
     public void delete(Integer id) {
         if(!repository.existsById(id.longValue())) {
             throw new CapybaraNotFoundException();
@@ -59,6 +67,8 @@ public class CapybaraService {
         this.repository.deleteById(id);
     }
 
+
+    //add
     public void add(Capybara capybara) {
         if(repository.existsById(capybara.getId())) {
             throw new CapybaraAlredyExist();
@@ -72,7 +82,7 @@ public class CapybaraService {
         List<Capybara> capybaras = repository.findByName(name);
         if (capybaras.isEmpty()) {
             throw new CapybaraNotFoundException();
-        }else if(capybaras.get(0).getColor().equals(color)) {
+        }else if(capybaras.getFirst().getColor().equals(color)) {
             throw new CapybaraAlredyExist();
         }
         capybaras.stream().filter
