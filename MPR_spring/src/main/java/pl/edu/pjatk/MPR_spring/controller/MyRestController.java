@@ -10,16 +10,13 @@ package pl.edu.pjatk.MPR_spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.MPR_spring.Service.CapybaraService;
-import pl.edu.pjatk.MPR_spring.Service.StringUtilsService;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
 
 import java.util.List;
-import java.util.Optional;
 
 //adnotacja do komunikowania z secia
 @RestController
@@ -53,13 +50,21 @@ public class MyRestController   {
     @GetMapping("capybara/{id}")// <- endpoint
     public ResponseEntity<Capybara> get(@PathVariable Long id ){
         return new ResponseEntity<>(this.capybaraService.getCapybara(id),HttpStatus.OK);
+    }
 
+    @GetMapping("/capybara/pdf/{id}")
+    public ResponseEntity<byte[]> getPdfCapybara(@PathVariable Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return capybaraService.getPdfCapybara(id);
     }
 
     @PostMapping("capybara")
         public ResponseEntity<Capybara> add(@RequestBody Capybara capybara){
         this.capybaraService.add(capybara);
-        return new ResponseEntity<>(capybara, HttpStatus.OK);
+        return new ResponseEntity<>(capybara, HttpStatus.CREATED);
     }
 
     @Transactional
