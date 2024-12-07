@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Update Capybara</title>
+</head>
+<body>
+<h1>Update a Capybara</h1>
+
+<form th:action="@{/view/updateForm}" method="post" th:object="${capybara}">
+  <div>
+    <label for="name">Choose a Capybara to update:</label>
+    <select name="name" id="name" required>
+      <option value="" disabled selected>Select a Capybara</option>
+      <option th:each="capybara : ${capybaraList}"
+              th:value="${capybara.name}"
+              th:text="${capybara.name}"></option>
+    </select>
+  </div>
+
+  <div>
+    <label for="newName">New Name:</label>
+    <input type="text" name="newName" id="newName" th:value="${capybara != null ? capybara.name : ''}" required/>
+  </div>
+
+  <div>
+    <label for="newColor">New Color:</label>
+    <input type="text" name="newColor" id="newColor" th:value="${capybara != null ? capybara.color : ''}" required/>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button type="submit">Update Capybara</button>
+  </div>
+
+  <div th:if="${error != null}">
+    <p style="color:red;">${error}</p>
+  </div>
+
+</form>
+
+</body>
+</html>

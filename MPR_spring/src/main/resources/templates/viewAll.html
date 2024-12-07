@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Capybara List</title>
+</head>
+<body>
+<h1 style="text-align: center; color: #333;">Capybara List</h1>
+
+<div th:each="capybara : ${capybaraList}" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+    <p><strong>Name:</strong> <span th:text="${capybara.name}"></span></p>
+    <p><strong>Color:</strong> <span th:text="${capybara.color}"></span></p>
+</div>
+</body>
+</html>

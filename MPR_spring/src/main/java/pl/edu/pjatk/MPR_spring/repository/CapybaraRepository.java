@@ -11,4 +11,7 @@ public interface CapybaraRepository extends CrudRepository<Capybara, Long> {
     public List<Capybara> findByName(String name);
     List<Capybara> findByColor(String color);
     void deleteById(Integer id);
+    boolean existsCarByIdentification(long identification);
+
+
 }

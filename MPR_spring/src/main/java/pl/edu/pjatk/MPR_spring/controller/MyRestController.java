@@ -23,7 +23,7 @@ import java.util.List;
 public class MyRestController   {
     private CapybaraService capybaraService;
 
-    //dzieki niemu spring tworzy automatychne nowy obiekt
+    //służy do automatycznego wstrzykiwania zależności do komponentów Springa
     @Autowired
     public MyRestController(CapybaraService capybaraService) {
         this.capybaraService = capybaraService;
@@ -58,7 +58,7 @@ public class MyRestController   {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return capybaraService.getPdfCapybara(id);
+        return capybaraService.getPdfCapybara(id); 
     }
 
     @PostMapping("capybara")

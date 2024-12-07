@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+// используется для обозначения класса как сервиса — компонента, который реализует бизнес-логику приложения
 @Service
 public class CapybaraService {
     private List<Capybara> capybaraList = new ArrayList<>();
@@ -79,29 +79,28 @@ public class CapybaraService {
 
     //add
     public void add(Capybara capybara) {
-        if (repository.existsById(capybara.getId())) {
+        if (repository.existsCarByIdentification(capybara.getIdentification())) {
             throw new CapybaraAlredyExist();
         }
         stringUtilsService.UpperCase(String.valueOf(capybara));
-        this.repository.save(capybara);
+        repository.save(capybara);
     }
 
 
     //update
     public void update(String name, String color, Capybara newCapybara) {
-        List<Capybara> capybaras = repository.findByName(name);
+        List<Capybara> capybaras = getCapybaraByName(name);
         if (capybaras.isEmpty()) {
             throw new CapybaraNotFoundException();
-        } else if (capybaras.getFirst().getColor().equals(color)) {
-            throw new CapybaraAlredyExist();
         }
-        capybaras.stream().filter
-                (c -> c.getColor().equals(color)).forEach(existing -> {
+
+        capybaras.stream().filter(c -> c.getColor().equals(color)).forEach(existing -> {
             existing.setName(newCapybara.getName());
             existing.setColor(newCapybara.getColor());
             repository.save(existing);
         });
     }
+
 
 
 
@@ -156,5 +155,6 @@ public class CapybaraService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // HTTP 500
         }
     }
+
 }
 

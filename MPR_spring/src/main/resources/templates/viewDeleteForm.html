@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Capybara</title>
+</head>
+<body>
+<h1>Delete a Capybara</h1>
+
+<!-- Форма для удаления капибары -->
+<form th:action="@{/view/deleteForm}" method="post">
+    <div>
+        <label for="id">Choose a Capybara to delete:</label>
+        <select name="id" id="id" required>
+
+            <option> Select a Capybara</option>
+            <option th:each="capybara : ${capybaraList}"
+                    th:value="${capybara.id}"
+                    th:text="${capybara.name}">
+            </option>
+        </select>
+    </div>
+
+    <!-- Кнопка для отправки формы -->
+    <div style="margin-top: 20px;">
+        <button type="submit">Delete Capybara</button>
+    </div>
+</form>
+
+</body>
+</html>
