@@ -6,7 +6,6 @@
 <body>
 <h1>Add a New Capybara</h1>
 
-<!-- Форма для добавления капибары -->
 <form th:action="@{/view/addForm}" th:object="${capybara}" method="post">
     <div>
         <label for="name">Name:</label>
@@ -18,9 +17,8 @@
         <input type="text" id="color" th:field="*{color}" placeholder="Enter color" required/>
     </div>
 
-    <!-- Добавляем отступ перед кнопкой -->
     <div style="margin-top: 20px;">
-        <button type="submit">Add Capybara</button>
+        <input id="submit" type="submit" value="Add capybara">
     </div>
 </form>
 </body>

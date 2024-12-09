@@ -93,7 +93,6 @@ public class MyViewController {
             }
         }
 
-        // Обновляем имя и цвет
         capybara.setName(newName);
         capybara.setColor(newColor);
         capybaraService.update(capybara.getName(), capybara.getColor(), capybara);

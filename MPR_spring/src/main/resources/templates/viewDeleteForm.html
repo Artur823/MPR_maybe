@@ -10,7 +10,7 @@
 <form th:action="@{/view/deleteForm}" method="post">
     <div>
         <label for="id">Choose a Capybara to delete:</label>
-        <select name="id" id="id" required>
+        <select name="id" id="id"  required>
 
             <option> Select a Capybara</option>
             <option th:each="capybara : ${capybaraList}"
