@@ -13,7 +13,6 @@ import java.util.List;
 public class Capybara {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@JsonIgnore
     private Long id;
     private String name;
     private String color;

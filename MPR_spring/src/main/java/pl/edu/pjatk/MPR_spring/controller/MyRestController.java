@@ -5,8 +5,8 @@ package pl.edu.pjatk.MPR_spring.controller;
 //@PathVariable: позволяет извлекать переменные из URI (путей) запроса. Используется для идентификаторов ресурсов.
 //ResponseEntity:  это объект, который представляет собой полный HTTP-ответ, включая статусный код, заголовки и тело ответа
 //Iterable — это часть коллекционного API, который определяет поведение объектов, которые могут быть перебраны с использованием цикла for-each
+//Optional<T> является контейнером, который может содержать либо значение типа T, либо быть пустым (не содержать значения)
 //@Transactional оборачивает метод в транзакцию, гарантируя, что все операции, выполняемые в его рамках, будут частью одной транзакции.
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,11 +75,9 @@ public class MyRestController   {
     }
 
     //то есть Patch
-    @PutMapping("capybara/{name}/{color}")
-    public ResponseEntity<Capybara> update(@PathVariable String name, @PathVariable String color, @RequestBody Capybara newCapybara) {
-       this.capybaraService.update(name, color, newCapybara);
+    @PutMapping("capybara/{id}")
+    public ResponseEntity<Capybara> update(@PathVariable Long id ,  @RequestBody Capybara newCapybara) throws Exception {
+       this.capybaraService.update( id ,newCapybara);
        return new ResponseEntity<>(newCapybara, HttpStatus.OK);
     }
-
-
 }
