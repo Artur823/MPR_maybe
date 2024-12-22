@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Capybara</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Update Capybara</h1>
+  <form th:action="@{/view/updateCapybara}" th:object="${capybara}" method="post">
+    <input type="hidden" th:field="${capybara.id}" />
+
+    <div class="form-group">
+      <label for="name">Capybara Name:</label>
+      <input type="text" th:field="${capybara.name}" class="form-control" id="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Capybara Color:</label>
+      <input type="number" th:field="${capybara.color}" class="form-control" id="color" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a th:href="@{/view/all}" class="btn btn-secondary">Back to List</a>
+  </form>
+</div>
+</body>
+</html>
