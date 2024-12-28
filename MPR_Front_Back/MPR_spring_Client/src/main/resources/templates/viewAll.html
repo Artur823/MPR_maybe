@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capybara List</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 30px;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h3 class="text-center mb-4">Capybara List</h3>
+
+    <!-- Add Capybara Button -->
+    <div class="text-center mb-3">
+        <a th:href="@{/view/addForm}" class="btn btn-primary btn-lg">Add New Capybara</a>
+    </div>
+
+    <!-- Search Form -->
+    <div class="d-flex justify-content-center mb-4">
+        <form th:action="@{/view/getByName}" method="GET" class="form-inline">
+            <input type="text" name="name" placeholder="Capybara Name" class="form-control mr-2" required>
+            <button type="submit" class="btn btn-info">Search</button>
+        </form>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Capybara Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Сolor</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="capybara : ${allCapybaras}">
+                <td th:text="${capybara.name}"></td>
+                <td th:text="${capybara.color}"></td>
+                <td>
+                    <!-- Edit and Delete buttons -->
+                    <a th:href="@{/view/updateCapybara/{id}(id=${capybara.id})}" class="btn btn-warning btn-sm">Update</a>
+                    <a th:href="@{/view/deleteCapybaraByName/{name}(name=${capybara.name})}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
