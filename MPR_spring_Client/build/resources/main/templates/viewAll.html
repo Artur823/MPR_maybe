@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capybara List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h3 class="text-center mb-4">Capybara List</h3>
+
+    <!-- Кнопка для добавления новой капибары -->
+    <div class="text-center mb-3">
+        <a th:href="@{/view/addForm}" class="btn btn-primary btn-lg">Add New Capybara</a>
+    </div>
+
+    <!-- Таблица капибар -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Перебор всех капибар -->
+            <tr th:each="capybara : ${allCapybaras}">
+                <td th:text="${capybara.name}"></td>
+                <td th:text="${capybara.color}"></td>
+                <td>
+                    <!-- Кнопка для обновления -->
+                    <a th:href="@{/view/updateCapybara/{id}(id=${capybara.id})}" class="btn btn-warning btn-sm">Update</a>
+
+                    <!-- Форма для удаления капибары -->
+                    <form th:action="@{/view/capybara/{id}(id=${capybara.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
