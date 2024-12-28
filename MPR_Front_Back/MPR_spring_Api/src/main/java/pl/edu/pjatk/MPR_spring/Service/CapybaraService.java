@@ -1,6 +1,7 @@
 package pl.edu.pjatk.MPR_spring.Service;
 
 
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -75,38 +76,40 @@ public class CapybaraService {
         return capybara.get();
     }
 
+
     //delete
-    public void delete(Integer id) {
-        if (!repository.existsById(id.longValue())) {
+    public boolean delete(Long id) {
+        if (!repository.existsById(id)) {
             throw new CapybaraNotFoundException();
         }
-        this.repository.deleteById(id);
+        repository.deleteById(id);
+        return true;
     }
 
 
-    //add
+
     public void add(Capybara capybara) {
-        if (repository.existsCarByIdentification(capybara.getIdentification())) {
+        if (repository.existsByName(capybara.getName())) {
+            System.out.println("Capybara with name " + capybara.getName() + " already exists");
             throw new CapybaraAlreadyExist();
         }
-        stringUtilsService.UpperCase(String.valueOf(capybara));
         repository.save(capybara);
     }
 
 
+
+
     //update
-    public void update(Long id, Capybara newCapybara) throws Exception {
+    public Capybara update(Long id, Capybara newCapybara) throws Exception {
         Optional<Capybara> existingCapybaraOptional = repository.findById(id);
         if (existingCapybaraOptional.isPresent()) {
             Capybara existingCapybara = existingCapybaraOptional.get();
 
-            // Проверяем, что обновления действительно нужны
             if (existingCapybara.getName().equals(newCapybara.getName()) &&
                     existingCapybara.getColor().equals(newCapybara.getColor())) {
-                throw new RuntimeException("No changes detected. Capybara already has the same name and color.");
+                throw new RuntimeException("No changes detected.");
             }
 
-            // Проверка и обновление
             verifyUpdate(existingCapybara, newCapybara);
             existingCapybara.setName(newCapybara.getName());
             existingCapybara.setColor(newCapybara.getColor());
@@ -114,8 +117,8 @@ public class CapybaraService {
         } else {
             throw new CapybaraNotFoundException();
         }
+        return newCapybara;
     }
-
 
 
     //verifyUpdate

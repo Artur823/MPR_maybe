@@ -38,10 +38,6 @@ public class Capybara {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     //bierze dane
     public String getName() {
         return name;
@@ -64,8 +60,9 @@ public class Capybara {
         generateHashCode();
     }
 
-    public long getIdentification() {
-        return identification;
+    @Override
+    public String toString() {
+        return "Capybara{name='" + name + "', color='" + color + "', id=" + id + "}";
     }
 
 }

@@ -1,6 +1,0 @@
-rootProject.name = 'MPR_Front_Back'
-
-include 'MPR_spring_Api', 'MPR_spring_Client'
-
-project(':MPR_spring_Api').projectDir = new File(rootDir, 'MPR_spring_Api')
-project(':MPR_spring_Client').projectDir = new File(rootDir, 'MPR_spring_Client')

@@ -8,19 +8,26 @@ package pl.edu.pjatk.MPR_spring.controller;
 //Optional<T> является контейнером, который может содержать либо значение типа T, либо быть пустым (не содержать значения)
 //@Transactional оборачивает метод в транзакцию, гарантируя, что все операции, выполняемые в его рамках, будут частью одной транзакции.
 
+import ch.qos.logback.core.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.MPR_spring.Service.CapybaraService;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
 
 import java.util.List;
+import java.util.Optional;
 
 //adnotacja do komunikowania z secia
 @RestController
 public class MyRestController   {
+
+    private static final Logger logger = LoggerFactory.getLogger(CapybaraService.class);
 
     @Autowired
     private CapybaraService capybaraService;
@@ -31,21 +38,16 @@ public class MyRestController   {
         this.capybaraService = capybaraService;
     }
 
-    @GetMapping("/api/capybara/all")
-    public List<Capybara> getAllCapybaras() {
-        return (List<Capybara>) capybaraService.getCapybaraList();
-    }
-
 
     @GetMapping ("capybara/name/{name}")
-        public ResponseEntity<List<Capybara>> getByName(@PathVariable String name){
-            return new ResponseEntity<>(this.capybaraService.getCapybaraByName(name), HttpStatus.OK);
-        }
+    public ResponseEntity<List<Capybara>> getByName(@PathVariable String name){
+        return new ResponseEntity<>(this.capybaraService.getCapybaraByName(name), HttpStatus.OK);
+    }
 
-        @GetMapping("capybara/color/{color}")
-        public ResponseEntity<List<Capybara>> getByColor(@PathVariable String color){
+    @GetMapping("capybara/color/{color}")
+    public ResponseEntity<List<Capybara>> getByColor(@PathVariable String color){
         return new ResponseEntity<>(this.capybaraService.getCapybaraByColor(color), HttpStatus.OK);
-        }
+    }
 
 
     @GetMapping("capybara/all")// <- endpoint
@@ -65,11 +67,11 @@ public class MyRestController   {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return capybaraService.getPdfCapybara(id); 
+        return capybaraService.getPdfCapybara(id);
     }
 
     @PostMapping("capybara")
-        public ResponseEntity<Capybara> add(@RequestBody Capybara capybara){
+    public ResponseEntity<Capybara> add(@RequestBody Capybara capybara){
         this.capybaraService.add(capybara);
         return new ResponseEntity<>(capybara, HttpStatus.CREATED);
     }
@@ -77,14 +79,54 @@ public class MyRestController   {
     @Transactional
     @DeleteMapping("capybara/{id}")
     public ResponseEntity<Capybara> delete(@PathVariable Integer id) {
-        this.capybaraService.delete(id);
+        this.capybaraService.delete(Long.valueOf(id));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //то есть Patch
     @PutMapping("capybara/{id}")
     public ResponseEntity<Capybara> update(@PathVariable Long id ,  @RequestBody Capybara newCapybara) throws Exception {
-       this.capybaraService.update( id ,newCapybara);
-       return new ResponseEntity<>(newCapybara, HttpStatus.OK);
+        this.capybaraService.update( id ,newCapybara);
+        return new ResponseEntity<>(newCapybara, HttpStatus.OK);
     }
+
+    //API + CLient --------------------------------------------------------------------------------------------------------------
+
+    @GetMapping("/client/capybara/all")
+    public List<Capybara> getCapybarasFromApi() {
+        return (List<Capybara>) capybaraService.getCapybaraList();
+    }
+
+    @Transactional
+    @DeleteMapping("/client/capybara/{id}")
+    public ResponseEntity<Void> deleteCapybaraById(@PathVariable Long id) {
+        if (!capybaraService.delete(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/client/capybara")
+    public ResponseEntity<Capybara> addCapybara(@RequestBody Capybara capybara) {
+        System.out.println("Received Capybara: " + capybara);
+        capybaraService.add(capybara);
+        return new ResponseEntity<>(capybara, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/client/capybara/{id}")
+    public ResponseEntity<Void> updateCapybara(@PathVariable("id") Long id, @RequestBody Capybara capybara) throws Exception {
+        this.capybaraService.update( id ,capybara);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/client/getById/{id}")
+    public ResponseEntity<Optional<Capybara>> getById(@PathVariable Long id) {
+        Optional<Capybara> capybara = capybaraService.getCapybaraById(id);
+        if (capybara == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(capybara);
+    }
+
 }

@@ -8,22 +8,19 @@
 </head>
 <body>
 <div class="container">
-    <h1>Add New Capybara</h1>
-    <form th:action="@{/view/save}" th:object="${capybara}" method="post">
-        <input type="hidden" th:field="${capybara.id}" />
-
+    <h3 class="text-center mb-4">Add New Capybara</h3>
+    <form th:action="@{/view/save}" method="post" th:object="${capybara}">
         <div class="form-group">
-            <label for="name">Capybara Name:</label>
-            <input type="text" th:field="${capybara.name}" class="form-control" id="name" placeholder="Enter Capybara Name" required>
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter Name" required>
         </div>
-
         <div class="form-group">
-            <label for="color">Capybara Age:</label>
-            <input type="number" th:field="${capybara.color}" class="form-control" id="color" placeholder="Enter Capybara color" required>
+            <label for="color">Color</label>
+            <input type="text" id="color" th:field="*{color}" class="form-control" placeholder="Enter Color" required>
         </div>
-
-        <button type="submit" class="btn btn-success">Save</button>
-        <a th:href="@{/view/all}" class="btn btn-secondary">Back to List</a>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
     </form>
 </div>
 </body>
