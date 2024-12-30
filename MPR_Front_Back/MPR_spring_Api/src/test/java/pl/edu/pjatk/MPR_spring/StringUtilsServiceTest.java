@@ -25,15 +25,17 @@ public class StringUtilsServiceTest {
     @Test
     public void goToUpperCaseWhenAllLettersAreLowerCase() {
         Capybara capybara = new Capybara("capibara", "white");
-        stringUtilsService.UpperCase(String.valueOf(capybara));
+        capybara.setColor(stringUtilsService.UpperCase(capybara.getColor()));
         assertEquals("capibara", capybara.getName());
         assertEquals("WHITE", capybara.getColor());
     }
 
+
     @Test
     public void goToUpperCaseWhenAllLettersAreMixCase() {
         Capybara capybara = new Capybara("CapibarA", "WhiTe");
-        stringUtilsService.UpperCase(String.valueOf(capybara));
+        capybara.setName(stringUtilsService.UpperCase(String.valueOf(capybara.getName())));
+        capybara.setColor(stringUtilsService.UpperCase(String.valueOf(capybara.getColor())));
         assertEquals("CAPIBARA", capybara.getName());
         assertEquals("WHITE", capybara.getColor());
     }
@@ -41,7 +43,8 @@ public class StringUtilsServiceTest {
     @Test
     public void goToLowerCaseExceptFirstLetterWhenAllLettersAreUpperCase() {
         Capybara capybara = new Capybara("CAPIBARA", "WHITE");
-        stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara));
+        capybara.setName(stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara.getName())));
+        capybara.setColor(stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara.getColor())));
         assertEquals("Capibara", capybara.getName());
         assertEquals("White", capybara.getColor());
     }
@@ -49,7 +52,8 @@ public class StringUtilsServiceTest {
     @Test
     public void goToLowerCaseExceptFirstLetterWhenAllLettersAreLowerCase() {
         Capybara capybara = new Capybara("capibara", "white");
-        stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara));
+        capybara.setName(stringUtilsService.goToLowerCaseExceptFirstLetter(capybara.getName()));
+        capybara.setColor(stringUtilsService.goToLowerCaseExceptFirstLetter((capybara.getColor())));
         assertEquals("Capibara", capybara.getName());
         assertEquals("White", capybara.getColor());
     }
@@ -57,7 +61,8 @@ public class StringUtilsServiceTest {
     @Test
     public void goToLowerCaseExceptFirstLetterWhenAllLettersAreMixCase() {
         Capybara capybara = new Capybara("cAPIBARa", "WHiTe");
-        stringUtilsService.goToLowerCaseExceptFirstLetter(String.valueOf(capybara));
+        capybara.setName(stringUtilsService.goToLowerCaseExceptFirstLetter(capybara.getName()));
+        capybara.setColor(stringUtilsService.goToLowerCaseExceptFirstLetter((capybara.getColor())));
         assertEquals("Capibara", capybara.getName());
         assertEquals("White", capybara.getColor());
     }

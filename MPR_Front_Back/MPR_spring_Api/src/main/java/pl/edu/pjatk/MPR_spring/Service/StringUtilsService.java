@@ -11,7 +11,10 @@ public class StringUtilsService {
     }
 
     public String goToLowerCaseExceptFirstLetter(String str) {
-        return str.substring(0, 1) + str.substring(1).toLowerCase();
+        if (str == null || str.isEmpty()) {
+            return str; // возвращаем строку как есть, если она пуста
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 }
 

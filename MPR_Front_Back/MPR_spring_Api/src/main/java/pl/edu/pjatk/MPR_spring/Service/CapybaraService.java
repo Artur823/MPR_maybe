@@ -25,7 +25,6 @@ import java.util.Optional;
 // используется для обозначения класса как сервиса — компонента, который реализует бизнес-логику приложения
 @Service
 public class CapybaraService {
-    private List<Capybara> capybaraList = new ArrayList<>();
     private StringUtilsService stringUtilsService;
     private CapybaraRepository repository;
 
@@ -93,8 +92,12 @@ public class CapybaraService {
             System.out.println("Capybara with name " + capybara.getName() + " already exists");
             throw new CapybaraAlreadyExist();
         }
+        String upperCasedName = stringUtilsService.UpperCase(capybara.getName());
+        capybara.setName(upperCasedName);
+
         repository.save(capybara);
     }
+
 
 
 

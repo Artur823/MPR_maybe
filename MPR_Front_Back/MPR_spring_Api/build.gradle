@@ -1,24 +1,23 @@
 plugins {
-	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'java'
 }
 
-group = 'pjwstk.edu.pl'
+group = 'pl.edu.pjatk'
 version = '0.0.1-SNAPSHOT'
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)  // JDK 21
-	}
-}
 
 repositories {
 	mavenCentral()
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
 dependencies {
-	// Стартовые зависимости для Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -27,15 +26,25 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.apache.pdfbox:pdfbox:3.0.3'
-
-
-
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-bootRun {
-	mainClass = 'pl.edu.pjwstk.MPR_spring_Api.Application'
+
+tasks.withType(Test) {
+	testClassesDirs = files('src/test/java')
+	classpath = sourceSets.test.runtimeClasspath
 }
+
+bootRun {
+	mainClass = 'pl.edu.pjatk.MPR_spring.MprSpringApiApplication'
+}
+
+bootJar {
+	mainClass = 'pl.edu.pjatk.MPR_spring.MprSpringApiApplication'
+}
+
+
+

@@ -27,6 +27,9 @@ public class Capybara {
         this.color = color;
         generateHashCode();
     }
+    public Capybara(String name) {
+        this.name = name;
+    }
 
     private void generateHashCode() {
         if (name != null && color != null) {
@@ -62,7 +65,7 @@ public class Capybara {
 
     @Override
     public String toString() {
-        return "Capybara{name='" + name + "', color='" + color + "', id=" + id + "}";
+        return "Capybara{name='" + name + "', color='" + color + "'}";
     }
 
 }
