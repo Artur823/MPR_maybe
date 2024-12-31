@@ -10,14 +10,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {CapybaraNotFoundException.class})
-    public ResponseEntity<Object> handleNotFound(RuntimeException ex) {
+    public ResponseEntity<Object> handleNotFound(CapybaraNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = {CapybaraAlreadyExist.class})
-    public ResponseEntity<Object> handleAlreadyExist(RuntimeException ex) {
+    public ResponseEntity<Object> handleAlreadyExist(CapybaraAlreadyExist ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-
-
+    @ExceptionHandler(value = {NoChangesDetectedException.class})
+    public ResponseEntity<Object> handleNoChangesDetected(NoChangesDetectedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

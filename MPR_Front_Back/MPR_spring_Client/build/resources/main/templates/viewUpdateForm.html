@@ -34,28 +34,28 @@
 <script>
   // Обработчик отправки формы через AJAX
   $('#updateCapybaraForm').submit(function(e) {
-    e.preventDefault();  // Предотвращаем стандартное поведение формы
+    e.preventDefault(); // Предотвращаем стандартное поведение формы
 
-    // Собираем данные формы
     var formData = $(this).serialize();
 
     $.ajax({
-      url: '/view/updateCapybara/' + $('#id').val(), // Используем ID Capybara в URL
-      type: 'POST',  // Метод запроса
-      data: formData,  // Данные формы
+      url: '/view/updateCapybara/' + $('#id').val(),
+      type: 'POST',
+      data: formData,
       success: function(response) {
-        // Отображаем сообщение об успешном обновлении
         $('#message').html('<div class="alert alert-success">Capybara updated successfully!</div>');
-
-        // Перенаправляем на главную страницу после успешного обновления
-        window.location.href = '/view/all';  // Перенаправление на главную страницу
+        window.location.href = '/view/all'; // Перенаправление на главную страницу
       },
       error: function(xhr, status, error) {
-        // В случае ошибки
-        $('#message').html('<div class="alert alert-danger">Error: ' + error + '</div>');
+        if (xhr.status === 409) { // Обработка конфликта
+          $('#message').html('<div class="alert alert-danger">' + xhr.responseText + '</div>');
+        } else {
+          $('#message').html('<div class="alert alert-danger">Error: ' + error + '</div>');
+        }
       }
     });
   });
+
 </script>
 
 </body>

@@ -13,12 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.edu.pjatk.MPR_spring.exception.CapybaraAlreadyExist;
 import pl.edu.pjatk.MPR_spring.exception.CapybaraNotFoundException;
+import pl.edu.pjatk.MPR_spring.exception.NoChangesDetectedException;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
 import pl.edu.pjatk.MPR_spring.repository.CapybaraRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +26,7 @@ import java.util.Optional;
 @Service
 public class CapybaraService {
     private StringUtilsService stringUtilsService;
+
     private CapybaraRepository repository;
 
     //CapybaraService
@@ -88,13 +89,12 @@ public class CapybaraService {
 
 
     public void add(Capybara capybara) {
-        if (repository.existsByName(capybara.getName())) {
-            System.out.println("Capybara with name " + capybara.getName() + " already exists");
+        if (repository.existsByNameAndColor(capybara.getName(), capybara.getColor())) {
+            System.out.println("Capybara with name " + capybara.getName() + " and color " + capybara.getColor() + " already exists");
             throw new CapybaraAlreadyExist();
         }
         String upperCasedName = stringUtilsService.UpperCase(capybara.getName());
         capybara.setName(upperCasedName);
-
         repository.save(capybara);
     }
 
@@ -103,37 +103,25 @@ public class CapybaraService {
 
 
     //update
-    public Capybara update(Long id, Capybara newCapybara) throws Exception {
-        Optional<Capybara> existingCapybaraOptional = repository.findById(id);
-        if (existingCapybaraOptional.isPresent()) {
-            Capybara existingCapybara = existingCapybaraOptional.get();
+    public Capybara update(Long id, Capybara capybara) {
+        // Ищем капибару по id
+        Capybara existingCapybara = repository.findById(id)
+                .orElseThrow(() -> new CapybaraNotFoundException("Capybara not found with id: " + id));
 
-            if (existingCapybara.getName().equals(newCapybara.getName()) &&
-                    existingCapybara.getColor().equals(newCapybara.getColor())) {
-                throw new RuntimeException("No changes detected.");
-            }
-
-            verifyUpdate(existingCapybara, newCapybara);
-            existingCapybara.setName(newCapybara.getName());
-            existingCapybara.setColor(newCapybara.getColor());
-            repository.save(existingCapybara);
-        } else {
-            throw new CapybaraNotFoundException();
+        // Проверяем, были ли изменения (по имени и цвету)
+        if (existingCapybara.getName().equals(capybara.getName()) && existingCapybara.getColor().equals(capybara.getColor())) {
+            // Если нет изменений, выбрасываем исключение
+            throw new CapybaraAlreadyExist("No changes detected. Capybara already exists with the same name and color.");
         }
-        return newCapybara;
+
+        // Обновляем капибару
+        existingCapybara.setName(capybara.getName());
+        existingCapybara.setColor(capybara.getColor());
+
+        return repository.save(existingCapybara);  // Сохраняем обновленную капибару
     }
 
-
-    //verifyUpdate
-    public void verifyUpdate(Capybara oldCapybara, Capybara newCapybara) {
-        String oldName = oldCapybara.getName().trim().toLowerCase();
-        String newName = newCapybara.getName().trim().toLowerCase();
-        String oldColor = oldCapybara.getColor().trim().toLowerCase();
-        String newColor = newCapybara.getColor().trim().toLowerCase();
-        if (oldName.equals(newName) && oldColor.equals(newColor)) {
-            throw new RuntimeException("Capybara name and color are the same");
-        }
-    }
+    
 
     //pdf
     public ResponseEntity<byte[]> getPdfCapybara(Long id) {

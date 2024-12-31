@@ -4,14 +4,14 @@ package pl.edu.pjatk.MPR_spring.service;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClient;
+
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import pl.edu.pjatk.MPR_spring.exception.CapybaraAlreadyExist;
 import pl.edu.pjatk.MPR_spring.model.Capybara;
-import reactor.core.publisher.Mono;
+
 
 import java.util.List;
 
@@ -79,26 +79,26 @@ public class CapybaraClientService {
                 .block();
     }
 
-    public Capybara updateCapybara(Long id, Capybara capybara) {
-        webClient.put()
-                .uri("/client/capybara/{id}", id)
-                .bodyValue(capybara)
-                .retrieve()
-                .toBodilessEntity()
-                .subscribe(response -> {
-                    System.out.println("Server response: " + response.getStatusCode());
-                });
-        return capybara;
+    public void updateCapybara(Long id, Capybara capybara) {
+        try {
+            webClient.put()
+                    .uri("/client/capybara/{id}", id)
+                    .bodyValue(capybara)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();  // Ожидаем завершения операции
+
+        } catch (WebClientResponseException e) {
+            if (e.getStatusCode().value() == 400) {  // Если ошибка 400 (BAD_REQUEST)
+                System.err.println("Capybara already exists with the same name and color: " + e.getResponseBodyAsString());
+                throw new CapybaraAlreadyExist();
+            } else {
+                System.err.println("Error occurred while updating capybara: " + e.getMessage());
+                throw new RuntimeException("Server error: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            throw new RuntimeException("Unexpected error: " + e.getMessage());
+        }
     }
-
-
-//    public List<Capybara> getByNameClient(final String name) {
-//        return restClient.get()
-//                .uri(uriBase + "/client/getByName/" + name)
-//                .retrieve()
-//                .body(new ParameterizedTypeReference<>() {});
-//    }
-//
-
 }
-
