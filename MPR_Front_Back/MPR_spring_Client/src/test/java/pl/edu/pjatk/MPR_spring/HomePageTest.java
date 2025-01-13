@@ -23,7 +23,7 @@ public class HomePageTest {
     @Test
     public void redirectToAddCapybaraPage() {
         homePage.clickAddCapybaraButton();
-        assertEquals(driver.getTitle(), "Add new capybara");
+        assertEquals(driver.getTitle(), "Add New Capybara");
     }
 
     @AfterEach

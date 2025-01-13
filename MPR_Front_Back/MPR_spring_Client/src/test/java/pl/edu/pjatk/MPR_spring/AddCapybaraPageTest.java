@@ -35,7 +35,7 @@ public class AddCapybaraPageTest {
         addCapybaraPage.clickSaveCapybaraButton();
 
         // Проверка редиректа (ожидаемый заголовок страницы после сохранения)
-        assertEquals("All Capybaras", driver.getTitle());
+        assertEquals("Capybara List", driver.getTitle());
     }
 
 }

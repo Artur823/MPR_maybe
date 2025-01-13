@@ -33,18 +33,6 @@ public class CapybaraServiceTest {
 
 
 
-    @Test
-    public void addCapybaraTest() {
-        Capybara capybara = new Capybara("Capibaratestadd", "Green");
-
-        when(stringUtilsService.UpperCase(any())).thenReturn("CAPYBARA");
-
-        capybaraService.add(capybara);
-
-        verify(stringUtilsService, times(1)).UpperCase(Mockito.contains("Capibaratestadd"));
-        verify(stringUtilsService, times(0)).goToLowerCaseExceptFirstLetter(Mockito.any());
-    }
-
 
     //czy dziala mock
     @Test

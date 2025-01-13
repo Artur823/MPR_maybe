@@ -4,14 +4,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePage {
    private WebDriver webDriver;
 
-   @FindBy(id = "add capybara button")
+    @FindBy(linkText = "Add New Capybara")
     private WebElement addCapybaraButton;
 
-   @FindBy(id = "capybaras name field")
+    @FindBy(id = "capybaras name field")
     private WebElement capybarasNameField;
 
    @FindBy(id = "capybaras age field")
@@ -25,7 +29,7 @@ public class HomePage {
         PageFactory.initElements(webDriver,this);
     }
 
-    public void clickAddCapybaraButton(){
+    public void clickAddCapybaraButton() {
         addCapybaraButton.click();
     }
     public String getCapybarasName(){

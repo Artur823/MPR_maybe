@@ -93,8 +93,7 @@ public class CapybaraService {
             System.out.println("Capybara with name " + capybara.getName() + " and color " + capybara.getColor() + " already exists");
             throw new CapybaraAlreadyExist();
         }
-        String upperCasedName = stringUtilsService.UpperCase(capybara.getName());
-        capybara.setName(upperCasedName);
+        capybara.setName(capybara.getName());
         repository.save(capybara);
     }
 

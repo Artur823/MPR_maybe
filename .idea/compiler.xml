@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="21">
+    <bytecodeTargetLevel target="1.6">
       <module name="MPR_spring.MPR_spring_Api" target="21" />
       <module name="MPR_spring.MPR_spring_Api.main" target="21" />
       <module name="MPR_spring.MPR_spring_Api.test" target="21" />

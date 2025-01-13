@@ -14,7 +14,7 @@ public class UpdateCapybaraPage {
     @FindBy(id="Capybara age update field")
     private WebElement capybaraAge;
 
-    @FindBy(id="update Capybara button")
+    @FindBy(linkText="Update")
     private WebElement updateCapybaraButton;
 
     public UpdateCapybaraPage(WebDriver driver) {

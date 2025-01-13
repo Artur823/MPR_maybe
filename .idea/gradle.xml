@@ -5,12 +5,10 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="21 (2)" />
+        <option name="gradleJvm" value="21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/MPR_spring_Api" />
-            <option value="$PROJECT_DIR$/MPR_spring_Client" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,16 +1,15 @@
 package pl.edu.pjatk.MPR_spring.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "capybara")
 public class Capybara {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "capybara_seq")
+    @SequenceGenerator(name = "capybara_seq", sequenceName = "capybara_seq", allocationSize = 1)
     //@JsonIgnore
     private Long id;
     private String name;
